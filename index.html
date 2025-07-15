@@ -1,0 +1,455 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynapseLantern - Advanced RAG System for Distributed Codebases</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .tech-gradient { background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #581c87 100%); }
+        .code-block { background: #1e293b; border-radius: 8px; }
+        .architecture-card { 
+            background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+            border: 1px solid #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .architecture-card:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+        }
+        .vs-traditional { 
+            background: linear-gradient(45deg, #dc2626, #b91c1c);
+            color: white;
+        }
+        .vs-rag { 
+            background: linear-gradient(45deg, #059669, #047857);
+            color: white;
+        }
+        .flow-arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 20px solid #6366f1;
+            margin: 10px auto;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.absolute{position:absolute}.relative{position:relative}.-left-2{left:-0.5rem}.-right-2{right:-0.5rem}.top-1\/2{top:50%}.mx-auto{margin-left:auto;margin-right:auto}.mb-12{margin-bottom:3rem}.mb-2{margin-bottom:0.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-2{margin-top:0.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.h-0\.5{height:0.125rem}.w-4{width:1rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-4xl{max-width:56rem}.max-w-6xl{max-width:72rem}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.divide-y > :not([hidden]) ~ :not([hidden]){--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse))}.divide-gray-200 > :not([hidden]) ~ :not([hidden]){--tw-divide-opacity:1;border-color:rgb(229 231 235 / var(--tw-divide-opacity, 1))}.overflow-x-auto{overflow-x:auto}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-2{border-width:2px}.border-l-4{border-left-width:4px}.border-blue-200{--tw-border-opacity:1;border-color:rgb(191 219 254 / var(--tw-border-opacity, 1))}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-green-200{--tw-border-opacity:1;border-color:rgb(187 247 208 / var(--tw-border-opacity, 1))}.border-green-300{--tw-border-opacity:1;border-color:rgb(134 239 172 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.border-indigo-500{--tw-border-opacity:1;border-color:rgb(99 102 241 / var(--tw-border-opacity, 1))}.border-purple-500{--tw-border-opacity:1;border-color:rgb(168 85 247 / var(--tw-border-opacity, 1))}.border-red-200{--tw-border-opacity:1;border-color:rgb(254 202 202 / var(--tw-border-opacity, 1))}.border-red-300{--tw-border-opacity:1;border-color:rgb(252 165 165 / var(--tw-border-opacity, 1))}.border-red-500{--tw-border-opacity:1;border-color:rgb(239 68 68 / var(--tw-border-opacity, 1))}.border-yellow-500{--tw-border-opacity:1;border-color:rgb(234 179 8 / var(--tw-border-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-blue-100{--tw-bg-opacity:1;background-color:rgb(219 234 254 / var(--tw-bg-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-gray-900{--tw-bg-opacity:1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1))}.bg-green-100{--tw-bg-opacity:1;background-color:rgb(220 252 231 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity, 1))}.bg-purple-100{--tw-bg-opacity:1;background-color:rgb(243 232 255 / var(--tw-bg-opacity, 1))}.bg-red-50{--tw-bg-opacity:1;background-color:rgb(254 242 242 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-gray-900{--tw-gradient-from:#111827 var(--tw-gradient-from-position);--tw-gradient-to:rgb(17 24 39 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-blue-900{--tw-gradient-to:#1e3a8a var(--tw-gradient-to-position)}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-8{padding-top:2rem;padding-bottom:2rem}.text-left{text-align:left}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-light{font-weight:300}.font-medium{font-weight:500}.font-semibold{font-weight:600}.italic{font-style:italic}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-blue-700{--tw-text-opacity:1;color:rgb(29 78 216 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-green-400{--tw-text-opacity:1;color:rgb(74 222 128 / var(--tw-text-opacity, 1))}.text-green-600{--tw-text-opacity:1;color:rgb(22 163 74 / var(--tw-text-opacity, 1))}.text-green-700{--tw-text-opacity:1;color:rgb(21 128 61 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-red-500{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-red-700{--tw-text-opacity:1;color:rgb(185 28 28 / var(--tw-text-opacity, 1))}.text-red-800{--tw-text-opacity:1;color:rgb(153 27 27 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.opacity-90{opacity:0.9}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-shadow{transition-property:box-shadow;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:bg-gray-100:hover{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.hover\:shadow-lg:hover{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}@media (min-width: 1024px){.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}}</style></head>
+<body class="bg-[#0a0a23]">
+    <!-- Clean, Modern Hero Section -->
+    <section class="min-h-[60vh] flex flex-col justify-center items-center text-center bg-[#0a0a23] px-4">
+        <div class="pt-32 pb-16 w-full max-w-2xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">SynapseLantern</h1>
+            <div class="flex justify-center mb-4">
+                <span class="inline-block w-16 h-1 rounded-full bg-gradient-to-r from-[#3b82f6] via-[#a78bfa] to-[#22d3ee] animate-pulse"></span>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-light text-[#e5e7eb] mb-8">World-Class RAG for Distributed Codebases</h2>
+            <p class="text-lg md:text-xl text-[#cbd5e1] mb-10 opacity-90">Unify, understand, and query your entire microservice architecture—across every repo, every service, every call chain.</p>
+            <a href="mailto:maximorobbio@gmail.com" class="inline-block bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold px-8 py-4 rounded-full transition-colors text-lg shadow-none">Request a Demo</a>
+        </div>
+    </section>
+    <!-- Problem Statement -->
+    <section class="py-16 bg-[#10172a]">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <h3 class="text-3xl font-bold text-white mb-12 text-center">The Multi-Repository Problem</h3>
+                <!-- Visual Comparison -->
+                <div class="mb-16">
+                    <div class="grid md:grid-cols-2 gap-10">
+                        <div class="bg-[#181f36] rounded-xl p-8 flex flex-col justify-between h-full">
+                            <h4 class="text-xl font-semibold text-[#f87171] mb-8 text-left">Traditional Tools (Jules, etc.)</h4>
+                            <div class="flex flex-col gap-6 flex-1">
+                                <div class="bg-[#10172a] p-5 rounded text-left">
+                                    <div class="font-bold text-[#e5e7eb] text-lg mb-1">user-service repo</div>
+                                    <div class="text-sm text-[#cbd5e1]">Analyzed in isolation</div>
+                                </div>
+                                <div class="bg-[#10172a] p-5 rounded text-left">
+                                    <div class="font-bold text-[#e5e7eb] text-lg mb-1">payment-service repo</div>
+                                    <div class="text-sm text-[#cbd5e1]">Analyzed in isolation</div>
+                                </div>
+                                <div class="bg-[#10172a] p-5 rounded text-left">
+                                    <div class="font-bold text-[#e5e7eb] text-lg mb-1">notification-service repo</div>
+                                    <div class="text-sm text-[#cbd5e1]">Analyzed in isolation</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 mt-8 text-[#f87171] font-semibold text-base"><span class="text-2xl">❌</span> No Cross-Repository Understanding</div>
+                        </div>
+                        <div class="bg-[#181f36] rounded-xl p-8 flex flex-col justify-between h-full">
+                            <h4 class="text-xl font-semibold text-[#22d3ee] mb-8 text-left">Our RAG System</h4>
+                            <div class="flex flex-col gap-6 flex-1">
+                                <div class="bg-[#10172a] p-5 rounded text-left">
+                                    <div class="font-bold text-[#e5e7eb] text-lg mb-1">user-service repo</div>
+                                    <div class="text-sm text-[#cbd5e1]">Analyzed in context</div>
+                                </div>
+                                <div class="bg-[#10172a] p-5 rounded text-left">
+                                    <div class="font-bold text-[#e5e7eb] text-lg mb-1">payment-service repo</div>
+                                    <div class="text-sm text-[#cbd5e1]">Analyzed in context</div>
+                                </div>
+                                <div class="bg-[#10172a] p-5 rounded text-left">
+                                    <div class="font-bold text-[#e5e7eb] text-lg mb-1">notification-service repo</div>
+                                    <div class="text-sm text-[#cbd5e1]">Analyzed in context</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 mt-8 text-[#22d3ee] font-semibold text-base"><span class="text-2xl">✅</span> Unified Cross-Repository Graph</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-10 mb-16">
+                    <div class="bg-[#181f36] rounded-xl p-8">
+                        <h4 class="text-xl font-semibold text-[#f87171] mb-6 text-left">Repository-Level Limitations</h4>
+                        <ul class="space-y-4 text-[#e5e7eb] text-base pl-2">
+                            <li class="flex items-start gap-2"><span class="text-[#f87171] text-lg mt-1">•</span><span><strong>Single-repo scope:</strong> Tools like Jules can only see one repository at a time</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[#f87171] text-lg mt-1">•</span><span><strong>Broken API chains:</strong> Can't trace calls from user-service → payment-service → notification-service</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[#f87171] text-lg mt-1">•</span><span><strong>Missing context:</strong> "How does checkout work?" only shows payment logic, not the full flow</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[#f87171] text-lg mt-1">•</span><span><strong>Deployment blindness:</strong> No understanding of how services interact in production</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-[#181f36] rounded-xl p-8">
+                        <h4 class="text-xl font-semibold text-[#3b82f6] mb-6 text-left">Real-World Impact</h4>
+                        <ul class="space-y-4 text-[#e5e7eb] text-base pl-2">
+                            <li class="flex items-start gap-2"><span class="text-[#3b82f6] text-lg mt-1">•</span><span><strong>Debugging nightmares:</strong> "Why is checkout failing?" requires manually checking 5+ repos</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[#3b82f6] text-lg mt-1">•</span><span><strong>Onboarding confusion:</strong> New devs can't understand how the system actually works</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[#3b82f6] text-lg mt-1">•</span><span><strong>Architecture drift:</strong> No visibility into actual service dependencies vs. intended design</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[#3b82f6] text-lg mt-1">•</span><span><strong>Change impact analysis:</strong> Can't predict what breaks when modifying an API</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Example Scenario -->
+                <div class="bg-[#181f36] p-8 rounded-xl">
+                    <h4 class="text-2xl font-semibold mb-8 text-[#e5e7eb] text-center">Example: "How does user registration work?"</h4>
+                    <div class="grid md:grid-cols-2 gap-10">
+                        <div>
+                            <div class="text-[#f87171] font-semibold mb-4 text-left text-lg">Traditional Tools Response:</div>
+                            <div class="bg-[#10172a] p-6 rounded text-base">
+                                <span class="text-[#e5e7eb] block mb-3">"I found a POST /register endpoint in the user-service that validates email and creates a user record."</span>
+                                <div class="flex items-center gap-2 text-[#f87171] italic text-base"><span class="text-xl">❌</span>Missing: email verification service, welcome email flow, analytics tracking</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-[#22d3ee] font-semibold mb-4 text-left text-lg">Our RAG System Response:</div>
+                            <div class="bg-[#10172a] p-6 rounded text-base">
+                                <span class="text-[#e5e7eb] block mb-3">"Registration involves 4 services: user-service creates the account, email-service sends verification, analytics-service tracks the event, and notification-service sends welcome messages. Here's the complete flow..."</span>
+                                <div class="flex items-center gap-2 text-[#22d3ee] italic text-base"><span class="text-xl">✅</span>Complete cross-repository understanding</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unified Visualization & Understanding Section -->
+    <section class="py-20 bg-[#10172a]">
+        <div class="container mx-auto px-6 flex flex-col items-center">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6 text-center">Visualize & Truly Understand Your Codebase</h2>
+            <div class="text-2xl font-bold text-[#f87171] mb-4 text-center">Still dumping code into large context windows?</div>
+            <div class="text-lg text-[#cbd5e1] mb-8 text-center">Here’s what you’re missing.</div>
+            <div class="w-full flex flex-col md:flex-row md:justify-center md:items-start gap-8 mb-6">
+                <div class="zoomable-img cursor-zoom-in flex items-center justify-center bg-[#181f36] rounded-lg shadow-lg w-full max-w-[600px] h-[400px] p-4" data-zoom="/Users/maximorobbio/LaternDev/imgs/MicroserviceVisualization.png">
+                    <img src="/Users/maximorobbio/LaternDev/imgs/MicroserviceVisualization.png" alt="Microservice call graph visualization" class="object-contain w-full h-full" />
+                </div>
+                <div class="zoomable-img cursor-zoom-in flex items-center justify-center bg-[#181f36] rounded-lg shadow-lg w-full max-w-[600px] h-[400px] p-4" data-zoom="/Users/maximorobbio/LaternDev/imgs/LargeCodeBaes.png">
+                    <img src="/Users/maximorobbio/LaternDev/imgs/LargeCodeBaes.png" alt="Large codebase visualization" class="object-contain w-full h-full" />
+                </div>
+            </div>
+            <div class="flex flex-col items-center mb-4">
+                <span class="text-[#cbd5e1] text-sm">Legend: Node colors represent <span class="font-semibold text-[#fbbf24]">Microservices</span>, <span class="font-semibold text-[#38bdf8]">Folders</span>, <span class="font-semibold text-[#a5b4fc]">Code</span>, <span class="font-semibold text-[#f9a8d4]">Files</span>, and <span class="font-semibold text-[#c4b5fd]">Other</span>.</span>
+            </div>
+            <div class="text-sm text-[#a5b4fc] text-center max-w-2xl font-semibold mt-2">See the structure. See the relationships. See the truth.</div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="py-16 bg-[#181f36]">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <h3 class="text-3xl font-bold text-white mb-12 text-center">Competitive Analysis</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full bg-[#10172a] rounded-lg">
+                        <thead class="bg-[#181f36] text-[#3b82f6]">
+                            <tr>
+                                <th class="px-6 py-4 text-left font-semibold">Capability</th>
+                                <th class="px-6 py-4 text-center font-semibold">Traditional Tools</th>
+                                <th class="px-6 py-4 text-center font-semibold">Our RAG System</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#181f36] text-[#e5e7eb]">
+                            <tr>
+                                <td class="px-6 py-4 font-medium">Repository Scope</td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#f87171]">Single Repo Only</span></td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#22d3ee]">Multi-Repo Unified</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium">Cross-Service API Tracing</td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#f87171]">Impossible</span></td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#22d3ee]">Full Call Chains</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium">Search Methodology</td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#f87171]">Keyword Only</span></td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#22d3ee]">Hybrid Multi-Modal</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium">User Personalization</td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#f87171]">Generic Responses</span></td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#22d3ee]">Role-Based Adaptation</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium">Architectural Understanding</td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#f87171]">Fragmented</span></td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#22d3ee]">Holistic System View</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium">Impact Analysis</td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#f87171]">Single Service</span></td>
+                                <td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-sm bg-[#27273a] text-[#22d3ee]">Cross-Service Effects</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Key Differentiators -->
+    <section class="py-16 bg-[#181f36] text-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <h3 class="text-3xl font-bold mb-12 text-center">Three Core Architectural Advantages</h3>
+                
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Graph Database Integration -->
+                    <div class="p-8 rounded-xl bg-[#10172a] flex flex-col items-center transition-transform hover:scale-[1.02]">
+                        <div class="text-4xl mb-4 text-[#3b82f6]">🕸️</div>
+                        <h4 class="text-xl font-bold mb-4 text-center">Graph-Based Microservice Mapping</h4>
+                        <p class="text-[#cbd5e1] mb-6 text-center">Unlike traditional tools that analyze services in isolation, our system builds a comprehensive relationship graph using Neo4j to understand cross-service dependencies, API call chains, and data flow patterns.</p>
+                        <div class="w-full bg-[#181f36] p-4 rounded text-[#22d3ee] text-sm font-mono text-left">
+                            <div>MATCH (service:Service)-[:CALLS]-&gt;(api:API)</div>
+                            <div>WHERE service.name = "user-service"</div>
+                            <div>RETURN api.endpoint, api.method</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hybrid Search -->
+                    <div class="p-8 rounded-xl bg-[#10172a] flex flex-col items-center transition-transform hover:scale-[1.02]">
+                        <div class="text-4xl mb-4 text-[#22d3ee]">🔍</div>
+                        <h4 class="text-xl font-bold mb-4 text-center">Hybrid Search Architecture</h4>
+                        <p class="text-[#cbd5e1] mb-6 text-center">Combines semantic vector search (pgvector) with traditional keyword search and graph-scoped retrieval. This multi-modal approach ensures both conceptual understanding and exact matches within proper architectural context.</p>
+                        <div class="space-y-2 text-sm w-full">
+                            <div class="bg-[#181f36] p-2 rounded text-[#a78bfa]">Semantic: "authentication flow"</div>
+                            <div class="bg-[#181f36] p-2 rounded text-[#3b82f6]">Keyword: "JWT.verify()"</div>
+                            <div class="bg-[#181f36] p-2 rounded text-[#22d3ee]">Graph-Scoped: Within auth-service</div>
+                        </div>
+                    </div>
+                    
+                    <!-- User Adaptability -->
+                    <div class="p-8 rounded-xl bg-[#10172a] flex flex-col items-center transition-transform hover:scale-[1.02]">
+                        <div class="text-4xl mb-4 text-[#a78bfa]">👥</div>
+                        <h4 class="text-xl font-bold mb-4 text-center">Adaptive Response Generation</h4>
+                        <p class="text-[#cbd5e1] mb-6 text-center">Leverages user context and role-based prompting to generate responses tailored to technical expertise level. The same query generates different explanations for developers, product managers, and executives.</p>
+                        <div class="space-y-2 text-xs w-full">
+                            <div class="bg-[#181f36] p-2 rounded text-[#e5e7eb]"><strong>Developer:</strong> "The JWT middleware validates tokens using RS256..."</div>
+                            <div class="bg-[#181f36] p-2 rounded text-[#e5e7eb]"><strong>PM:</strong> "Users stay logged in through secure session tokens..."</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Architecture -->
+    <section class="py-16 bg-[#10172a]">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <h3 class="text-3xl font-bold text-white mb-12 text-center">System Architecture Overview</h3>
+                
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Storage Pipeline -->
+                    <div>
+                        <h4 class="text-2xl font-semibold mb-6 text-[#3b82f6]">Storage Pipeline</h4>
+                        <div class="space-y-4">
+                            <div class="bg-[#181f36] p-4 rounded-lg">
+                                <h5 class="font-semibold mb-2 text-[#a78bfa]">1. Parse Pipeline</h5>
+                                <p class="text-sm text-[#e5e7eb]">TypeScript/JavaScript AST parsing with strategy pattern for extensibility</p>
+                            </div>
+                            <div class="w-1 h-8 mx-auto bg-gradient-to-b from-[#3b82f6] to-[#181f36] rounded-full"></div>
+                            <div class="bg-[#181f36] p-4 rounded-lg">
+                                <h5 class="font-semibold mb-2 text-[#22d3ee]">2. Graph Synchronization</h5>
+                                <p class="text-sm text-[#e5e7eb]">Neo4j relationship mapping with differential updates</p>
+                            </div>
+                            <div class="w-1 h-8 mx-auto bg-gradient-to-b from-[#22d3ee] to-[#181f36] rounded-full"></div>
+                            <div class="bg-[#181f36] p-4 rounded-lg">
+                                <h5 class="font-semibold mb-2 text-[#a78bfa]">3. Vector Embedding</h5>
+                                <p class="text-sm text-[#e5e7eb]">PostgreSQL + pgvector for semantic search capabilities</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Query Pipeline -->
+                    <div>
+                        <h4 class="text-2xl font-semibold mb-6 text-[#22d3ee]">Query Pipeline</h4>
+                        <div class="space-y-4">
+                            <div class="bg-[#181f36] p-4 rounded-lg">
+                                <h5 class="font-semibold mb-2 text-[#fbbf24]">1. Intent Classification</h5>
+                                <p class="text-sm text-[#e5e7eb]">LLM-powered query understanding and strategy selection</p>
+                            </div>
+                            <div class="w-1 h-8 mx-auto bg-gradient-to-b from-[#fbbf24] to-[#181f36] rounded-full"></div>
+                            <div class="bg-[#181f36] p-4 rounded-lg">
+                                <h5 class="font-semibold mb-2 text-[#f87171]">2. Multi-Modal Retrieval</h5>
+                                <p class="text-sm text-[#e5e7eb]">Parallel execution of semantic, keyword, and graph-scoped search</p>
+                            </div>
+                            <div class="w-1 h-8 mx-auto bg-gradient-to-b from-[#f87171] to-[#181f36] rounded-full"></div>
+                            <div class="bg-[#181f36] p-4 rounded-lg">
+                                <h5 class="font-semibold mb-2 text-[#6366f1]">3. Context-Aware Generation</h5>
+                                <p class="text-sm text-[#e5e7eb]">Role-based response formatting with architectural context</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Implementation -->
+    <section class="py-16 bg-[#10172a]">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <h3 class="text-3xl font-bold text-white mb-12 text-center">Technical Implementation Details</h3>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-[#181f36] p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-4 text-[#3b82f6]">Data Storage Layer</h4>
+                        <ul class="space-y-3 text-[#e5e7eb]">
+                            <li><strong class="text-[#a78bfa]">Neo4j:</strong> Service relationships, API call graphs, dependency mapping</li>
+                            <li><strong class="text-[#22d3ee]">PostgreSQL:</strong> Code metadata, chunks, API endpoints, unresolved calls</li>
+                            <li><strong class="text-[#a78bfa]">pgvector:</strong> Semantic embeddings for conceptual search</li>
+                            <li><strong class="text-[#3b82f6]">Git Integration:</strong> Differential updates based on commit changes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-[#181f36] p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-4 text-[#22d3ee]">Query Processing</h4>
+                        <ul class="space-y-3 text-[#e5e7eb]">
+                            <li><strong class="text-[#fbbf24]">Intent Classification:</strong> LLM-powered query understanding</li>
+                            <li><strong class="text-[#a78bfa]">Strategy Selection:</strong> Dynamic choice of retrieval methods</li>
+                            <li><strong class="text-[#22d3ee]">Parallel Retrieval:</strong> Concurrent semantic, keyword, and graph queries</li>
+                            <li><strong class="text-[#3b82f6]">Context Fusion:</strong> Intelligent merging of multi-source results</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-[#181f36] border border-[#27273a] p-6 rounded-lg">
+                    <h5 class="text-lg font-semibold text-[#3b82f6] mb-4">System Architecture Diagrams</h5>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <a href="https://www.mermaidchart.com/app/projects/ee494cb0-8c79-43fa-a1cf-7ead8205dbc4/diagrams/ac67cc0c-a8cb-45eb-bed5-567f11c8677f/version/v0.1/edit" target="_blank" class="bg-[#10172a] p-4 rounded-lg border border-[#27273a] hover:border-[#3b82f6] transition-colors">
+                            <div class="text-2xl mb-2">📊</div>
+                            <div class="font-semibold text-[#3b82f6]">Storage Architecture</div>
+                            <div class="text-sm text-[#e5e7eb]">Detailed storage pipeline and data flow</div>
+                        </a>
+                        <a href="https://www.mermaidchart.com/app/projects/ee494cb0-8c79-43fa-a1cf-7ead8205dbc4/diagrams/e59925cf-b960-47eb-a83e-77f3d993fb35/version/v0.1/edit" target="_blank" class="bg-[#10172a] p-4 rounded-lg border border-[#27273a] hover:border-[#22d3ee] transition-colors">
+                            <div class="text-2xl mb-2">🔍</div>
+                            <div class="font-semibold text-[#22d3ee]">Retrieval Architecture</div>
+                            <div class="text-sm text-[#e5e7eb]">Query processing and retrieval flow</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-16 bg-[#181f36] text-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h3 class="text-3xl font-bold mb-8">Contact Me</h3>
+                <p class="text-lg text-[#cbd5e1] mb-8">Interested in learning more about this advanced RAG system for distributed codebases?</p>
+                <a href="mailto:maximorobbio@gmail.com" class="inline-flex items-center bg-[#3b82f6] hover:bg-[#2563eb] text-white px-8 py-4 rounded-lg font-semibold transition-colors text-lg">
+                    <span class="mr-2">📧</span>
+                    maximorobbio@gmail.com
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#10172a] text-white py-8 border-t border-[#181f36]">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-[#cbd5e1]">Advanced RAG System for Distributed Codebases - Technical Presentation</p>
+        </div>
+    </footer>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95f9ad2e90271fe9',t:'MTc1MjU4Njg3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+
+<!-- Lightbox Overlay for Zoomed Images -->
+<style>
+#zoom-overlay {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10, 10, 23, 0.96);
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.2s;
+}
+#zoom-overlay.active {
+  display: flex;
+}
+#zoom-overlay img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+#zoom-overlay .close-btn {
+  position: absolute;
+  top: 32px;
+  right: 48px;
+  font-size: 2.5rem;
+  color: #fff;
+  cursor: pointer;
+  z-index: 1001;
+  background: rgba(30,41,59,0.7);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+#zoom-overlay .close-btn:hover {
+  background: rgba(59,130,246,0.8);
+}
+</style>
+<div id="zoom-overlay">
+  <span class="close-btn" title="Close">&times;</span>
+  <img src="" alt="Zoomed visualization" />
+</div>
+<script>
+  document.querySelectorAll('.zoomable-img').forEach(function(div) {
+    div.addEventListener('click', function() {
+      var overlay = document.getElementById('zoom-overlay');
+      var img = overlay.querySelector('img');
+      img.src = div.getAttribute('data-zoom');
+      overlay.classList.add('active');
+    });
+  });
+  document.getElementById('zoom-overlay').addEventListener('click', function(e) {
+    if (e.target === this || e.target.classList.contains('close-btn')) {
+      this.classList.remove('active');
+      this.querySelector('img').src = '';
+    }
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var overlay = document.getElementById('zoom-overlay');
+      if (overlay.classList.contains('active')) {
+        overlay.classList.remove('active');
+        overlay.querySelector('img').src = '';
+      }
+    }
+  });
+</script>
+
+</body></html>
